@@ -1,18 +1,21 @@
-import 'package:flutter/material.dart';
-
 import 'server.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:weather/server.dart';
 
 class WeeklyForecastList extends StatelessWidget {
   const WeeklyForecastList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final DateTime currentDate = DateTime.now();
     final TextTheme textTheme = Theme.of(context).textTheme;
     final forecasts = Server.getDailyForecast();
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-            (context, index) {
+        (context, index) {
           final forecast = forecasts[index];
           return Card(
             child: Row(
@@ -34,7 +37,7 @@ class WeeklyForecastList extends StatelessWidget {
                           ),
                         ),
                         child: Image.network(
-                          '${baseAssetURL}/day_$index.jpeg',
+                          forecast.weathercode.imageurl,
                           fit: BoxFit.cover,
                         ),
                       ),

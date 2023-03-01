@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weather/weekly_forecast_list.dart';
+
+import 'hourly_forecast_list.dart';
+import 'server.dart';
 
 import 'hourly_forecast_list.dart';
 import 'server.dart';
@@ -10,22 +14,23 @@ void main() {
 
 class HorizonsApp extends StatelessWidget {
   HorizonsApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        // This is the theme of your application.
-        theme: ThemeData.dark(),
-        // Scrolling in Flutter behaves differently depending on the
-        // ScrollBehavior. By default, ScrollBehavior changes depending
-        // on the current platform. For the purposes of this scrolling
-        // workshop, we're using a custom ScrollBehavior so that the
-        // experience is the same for everyone - regardless of the
-        // platform they are using.
-        scrollBehavior: const ConstantScrollBehavior(),
-        title: 'Horizons Weather',
-        home: ForecastWidget());
+      debugShowCheckedModeBanner: false,
+      // This is the theme of your application.
+      theme: ThemeData.dark(),
+      // Scrolling in Flutter behaves differently depending on the
+      // ScrollBehavior. By default, ScrollBehavior changes depending
+      // on the current platform. For the purposes of this scrolling
+      // workshop, we're using a custom ScrollBehavior so that the
+      // experience is the same for everyone - regardless of the
+      // platform they are using.
+      scrollBehavior: const ConstantScrollBehavior(),
+      title: 'Mads Weather App',
+      home: ForecastWidget());
   }
 }
 
@@ -49,25 +54,23 @@ class _ForecastWidgetState extends State<ForecastWidget> {
       body: CustomScrollView(
         slivers: <Widget>[
           _buildSliverAppBar(),
-          _tabs.elementAt(_selectedIndex)
+          _tabs.elementAt(_selectedIndex),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_view_week), label: 'Weekly'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_view_day), label: 'Hourly'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_view_week), label: 'Weekly'),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: 'Hourly'),
+      ],
+    onTap: (index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    },
+    ),
     );
   }
-
   SliverAppBar _buildSliverAppBar() {
     return SliverAppBar(
       pinned: true,
@@ -103,10 +106,6 @@ class _ForecastWidgetState extends State<ForecastWidget> {
     );
   }
 }
-
-
-// --------------------------------------------
-// Below this line are helper classes and data.
 
 class ConstantScrollBehavior extends ScrollBehavior {
   const ConstantScrollBehavior();

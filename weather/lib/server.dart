@@ -11,13 +11,12 @@ class Server {
     final weathercodes = daily['weathercode'] as List<int>;
     final temperature_2m_max = daily['temperature_2m_max'] as List<double>;
     final temperature_2m_min = daily['temperature_2m_min'] as List<double>;
-    return List.generate(
-        times.length,
-        (index) => DailyForecast(
-            time: DateTime.parse(times[index]),
+    return List.generate(times.length, (index) =>
+        DailyForecast(time: DateTime.parse(times[index]),
             weathercode: WeatherCode.fromNumeric(weathercodes[index]),
             temperature_2m_max: temperature_2m_max[index],
-            temperature_2m_min: temperature_2m_min[index]));
+            temperature_2m_min: temperature_2m_min[index]
+        ));
   }
 
   static List<HourlyForecast> getHourlyForecast() {
@@ -25,24 +24,22 @@ class Server {
     final times = hourly['time'] as List<String>;
     final temperature_2m = hourly['temperature_2m'] as List<double>;
     final apparent_temperature = hourly['apparent_temperature'] as List<double>;
-    final precipitation_probability =
-        hourly['precipitation_probability'] as List<double>;
+    final precipitation_probability = hourly['precipitation_probability'] as List<
+        double>;
     final precipitation = hourly['precipitation'] as List<double>;
-    return List.generate(
-        times.length,
-        (index) => HourlyForecast(
-            time: DateTime.parse(times[index]),
+    return List.generate(times.length, (index) =>
+        HourlyForecast(time: DateTime.parse(times[index]),
             temperature_2m: temperature_2m[index],
             apparent_temperature: apparent_temperature[index],
-            precipitation: precipitation[index],
-            precipitation_probability: precipitation_probability[index]));
+            precipitation_probability: precipitation_probability[index],
+            precipitation: precipitation[index]
+        ));
   }
 }
 
 final _dailyForecast = {
   "latitude": 55.470795,
   "longitude": 8.449936,
-  "generationtime_ms": 1.2511014938354492,
   "utc_offset_seconds": 3600,
   "timezone": "Europe/Copenhagen",
   "timezone_abbreviation": "CET",
@@ -72,7 +69,7 @@ final _dailyForecast = {
 final _hourlyForecast = {
   "latitude": 55.470795,
   "longitude": 8.449936,
-  "generationtime_ms": 1.4919042587280273,
+  "generationtime_ms": 1.3009309768676758,
   "utc_offset_seconds": 3600,
   "timezone": "Europe/Copenhagen",
   "timezone_abbreviation": "CET",
