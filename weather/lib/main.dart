@@ -4,10 +4,6 @@ import 'package:weather/weekly_forecast_list.dart';
 import 'hourly_forecast_list.dart';
 import 'server.dart';
 
-import 'hourly_forecast_list.dart';
-import 'server.dart';
-import 'weekly_forecast_list.dart';
-
 void main() {
   runApp(HorizonsApp());
 }
@@ -101,7 +97,7 @@ class _ForecastWidgetState extends State<ForecastWidget> {
           StretchMode.fadeTitle,
           StretchMode.blurBackground,
         ],
-        title: const Text('Weather for Week '),
+        title: const Text('Weekly Weather'),
         background: DecoratedBox(
           position: DecorationPosition.foreground,
           decoration: BoxDecoration(

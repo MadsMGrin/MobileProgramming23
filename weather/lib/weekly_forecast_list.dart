@@ -1,8 +1,6 @@
 import 'server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:weather/server.dart';
 
 class WeeklyForecastList extends StatelessWidget {
   const WeeklyForecastList({Key? key}) : super(key: key);
