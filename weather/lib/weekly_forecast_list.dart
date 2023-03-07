@@ -41,6 +41,7 @@ class WeeklyForecastList extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
+
                       Center(
                         child: Text(
                           forecast.time.day.toString(),

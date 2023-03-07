@@ -30,13 +30,25 @@ class DailyForecast {
         return '';
     }
   }
+  static List<DailyForecast> fromJson(Map<String, dynamic> daily){
+    final times = daily['time'] as List<dynamic>;
+    final weathercodes = daily['weathercode'] as List<dynamic>;
+    final temperature_2m_max = daily['temperature_2m_max'] as List<dynamic>;
+    final temperature_2m_min = daily['temperature_2m_min'] as List<dynamic>;
+    return List.generate(times.length, (index) =>
+        DailyForecast(time: DateTime.parse(times[index]),
+            weathercode: WeatherCode.fromNumeric(weathercodes[index]),
+            temperature_2m_max: temperature_2m_max[index],
+            temperature_2m_min: temperature_2m_min[index]
+        ));
+  }
 }
 
 class HourlyForecast {
   final DateTime time;
   final double temperature_2m;
   final double apparent_temperature;
-  final double precipitation_probability;
+  final int precipitation_probability;
   final double precipitation;
 
   HourlyForecast(
@@ -46,6 +58,22 @@ class HourlyForecast {
         required this.precipitation_probability,
         required this.precipitation
       });
+
+  static List<HourlyForecast> fromJson(Map<String, dynamic> hourly){
+    final times = hourly['time'] as List<dynamic>;
+    final temperature_2m = hourly['temperature_2m'] as List<dynamic>;
+    final apparent_temperature = hourly['apparent_temperature'] as List<dynamic>;
+    final precipitation_probability = hourly['precipitation_probability'] as List<
+        dynamic>;
+    final precipitation = hourly['precipitation'] as List<dynamic>;
+    return List.generate(times.length, (index) =>
+        HourlyForecast(time: DateTime.parse(times[index]),
+            temperature_2m: temperature_2m[index],
+            apparent_temperature: apparent_temperature[index],
+            precipitation_probability: precipitation_probability[index],
+            precipitation: precipitation[index]
+        ));
+  }
 }
 
 

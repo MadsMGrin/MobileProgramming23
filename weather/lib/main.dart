@@ -19,18 +19,18 @@ class HorizonsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // This is the theme of your application.
-      theme: ThemeData.dark(),
-      // Scrolling in Flutter behaves differently depending on the
-      // ScrollBehavior. By default, ScrollBehavior changes depending
-      // on the current platform. For the purposes of this scrolling
-      // workshop, we're using a custom ScrollBehavior so that the
-      // experience is the same for everyone - regardless of the
-      // platform they are using.
-      scrollBehavior: const ConstantScrollBehavior(),
-      title: 'Mads Weather App',
-      home: ForecastWidget());
+        debugShowCheckedModeBanner: false,
+        // This is the theme of your application.
+        theme: ThemeData.dark(),
+        // Scrolling in Flutter behaves differently depending on the
+        // ScrollBehavior. By default, ScrollBehavior changes depending
+        // on the current platform. For the purposes of this scrolling
+        // workshop, we're using a custom ScrollBehavior so that the
+        // experience is the same for everyone - regardless of the
+        // platform they are using.
+        scrollBehavior: const ConstantScrollBehavior(),
+        title: 'Mads Weather App',
+        home: ForecastWidget());
   }
 }
 
@@ -44,33 +44,47 @@ class ForecastWidget extends StatefulWidget {
 class _ForecastWidgetState extends State<ForecastWidget> {
   int _selectedIndex = 0;
   final _tabs = [
-    const WeeklyForecastList(),
-    const HourlyForecastList(),
+    WeeklyForecastList.new,
+    HourlyForecastList.new,
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          _buildSliverAppBar(),
-          _tabs.elementAt(_selectedIndex),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        items: [
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_view_week), label: 'Weekly'),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), label: 'Hourly'),
-      ],
-    onTap: (index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-    },
-    ),
+    return FutureBuilder(
+        future: Server.restore(),
+        builder: (context, snapshot) =>
+            Scaffold(
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  await Server.refresh();
+                  await Server.save();
+                  print('Refreshed');
+                },
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    _buildSliverAppBar(),
+                    _tabs.elementAt(_selectedIndex).call(),
+                  ],
+                ),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: _selectedIndex,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_view_week), label: 'Weekly'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_view_day), label: 'Hourly'),
+                ],
+                onTap: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+              ),
+            )
     );
   }
+
   SliverAppBar _buildSliverAppBar() {
     return SliverAppBar(
       pinned: true,
@@ -87,7 +101,7 @@ class _ForecastWidgetState extends State<ForecastWidget> {
           StretchMode.fadeTitle,
           StretchMode.blurBackground,
         ],
-        title: const Text('Horizons'),
+        title: const Text('Weather for Week '),
         background: DecoratedBox(
           position: DecorationPosition.foreground,
           decoration: BoxDecoration(
@@ -111,13 +125,13 @@ class ConstantScrollBehavior extends ScrollBehavior {
   const ConstantScrollBehavior();
 
   @override
-  Widget buildScrollbar(
-          BuildContext context, Widget child, ScrollableDetails details) =>
+  Widget buildScrollbar(BuildContext context, Widget child,
+      ScrollableDetails details) =>
       child;
 
   @override
-  Widget buildOverscrollIndicator(
-          BuildContext context, Widget child, ScrollableDetails details) =>
+  Widget buildOverscrollIndicator(BuildContext context, Widget child,
+      ScrollableDetails details) =>
       child;
 
   @override
